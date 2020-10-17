@@ -19,6 +19,7 @@ namespace CoolAndGood
         }
 
         private static Image MemeMan = Resources.Meme_Man_HD;
+        private static Image Dancer = Resources.Dancer;
 
         Random R = new Random(DateTime.Now.Millisecond);
         private int magnitude = 10;
@@ -41,13 +42,10 @@ namespace CoolAndGood
             T.Interval = 1;
             T.Start();
 
-
-
-            memeManBox = PictureBoxFromImg(MemeMan);
+            memeManBox = (R.Next() & 1) == 0 ? PictureBoxFromImg(MemeMan) : PictureBoxFromImg(Dancer);
             memeManBox.Top = 250;
             memeManBox.Left = -memeManBox.Width;
             Controls.Add(memeManBox);
-
         }
 
         private void T_Tick(object sender, EventArgs e)
@@ -59,18 +57,21 @@ namespace CoolAndGood
 
             if (movespeed > 0 && memeManBox.Left > SystemInformation.VirtualScreen.Width)
             {
-                memeManBox.Left += memeManBox.Width;
-                memeManBox.Image.RotateFlip(RotateFlipType.Rotate180FlipY);
-                movespeed *= -1;
+                flip();
             }
 
             if (movespeed < 0 && memeManBox.Left + memeManBox.Width < 0)
             {
-                memeManBox.Left -= memeManBox.Width;
-                memeManBox.Image.RotateFlip(RotateFlipType.Rotate180FlipY);
-                movespeed *= -1;
+                flip();
             }
 
+        }
+
+        private void flip()
+        {
+            memeManBox.Left -= memeManBox.Width;
+            memeManBox.Image.RotateFlip(RotateFlipType.Rotate180FlipY);
+            movespeed *= -1;
         }
 
         private PictureBox PictureBoxFromImg(Image img)
